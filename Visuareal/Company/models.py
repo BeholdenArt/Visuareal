@@ -41,6 +41,15 @@ class Points(models.Model):
 	class Meta: 
 		abstract = True
 
+class OrderQueue(models.Model):
+	orderedProducts = models.ManyToManyField('Company.CompanyInventory', verbose_name= "Order Placed", blank= True)
+	orderFrom = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, verbose_name= "Dealer Who Ordered")
+	orderTo = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, verbose_name= "Company Whom Ordered")
+	placedOn = models.DateTimeField(blank= True, null= True)
+	expectedDelievery = models.DateTimeField(blank= True, null= True)
+
+	def __str__(self):
+		return str(self.orderFrom)
 
 class AddCustomer(models.Model):
 	customerName = models.CharField(max_length= 30, verbose_name= "Customer Name")
