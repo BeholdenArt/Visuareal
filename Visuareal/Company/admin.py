@@ -1,6 +1,14 @@
 from django.contrib import admin
 from Company.models import AddCustomer, CompanyInventory, AddCompany
 
+class AddCustomerAdmin(admin.ModelAdmin):
+	readonly_fields = ('createdOn', 'updatedOn')
+	def get_model_perms(self, request):
+		return {} 
+
+class CompanyInventoryAdmin(admin.ModelAdmin):
+	def get_model_perms(self, request):
+		return {} 
 
 class AddCustomerInline(admin.StackedInline):
 	model = AddCustomer
@@ -14,7 +22,7 @@ class AddCompanyAdmin(admin.ModelAdmin):
 	inlines = [AddCustomerInline, CompanyInventoryInline]
 	model = AddCompany
 
-admin.site.register(AddCustomer)
-admin.site.register(CompanyInventory)
+admin.site.register(AddCustomer, AddCustomerAdmin)
+admin.site.register(CompanyInventory, CompanyInventoryAdmin)
 admin.site.register(AddCompany, AddCompanyAdmin)
 # Register your models here.
