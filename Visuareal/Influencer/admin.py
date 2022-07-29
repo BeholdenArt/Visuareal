@@ -3,8 +3,6 @@ from Influencer.models import AddInfluencer
 # Register your models here.
 
 
-
-
 class AddInfluencerAdmin(admin.ModelAdmin):
 	from Company.admin import AddCustomerInline
 	inlines = [AddCustomerInline]
