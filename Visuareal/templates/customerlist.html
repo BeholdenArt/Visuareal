@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class=" shadow-lg bg-white rounded p-3 ms-5 me-5" id="customerT">
+    <div class="h-60  table-responsive" >
+
+      <form method="POST" class="d-flex justify-content-between">
+        <a type="submit" name="add" onclick="window.open('ADD buttons/addcustomer.html','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
+        <button type="submit" name="delete" href='#' class="btn btn-danger">Delete</button>
+      </form>
+      <span class="d-flex justify-content-center"><strong>Customers list</strong></span>
+
+      <table  class="table table-striped">
+       
+
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Interseted products</th>
+            <th scope="col">Interseted company</th>
+            <th scope="col">Influenced through</th>
+            <th scope="col">Dealer Suggested</th>
+          </tr>
+        </thead>
+        <tbody id="table1">
+          {% for data in all_data %}  
+          <tr>
+            <td>
+              {{data.pk}}
+            </td>
+            <td>
+              {{data.customerName}}
+            </td>
+            <td>
+              {{data.customerPhoneNumber}}
+            </td>
+            <td>
+              {{data.interestedProduct.all|join:', '}}
+            </td>
+            <td>
+              {{data.companyInterested}}
+            </td>
+            <td>
+              {{data.influencedThrough}}
+            </td>
+            <td>
+              {{data.dealerName}}
+            </td>
+
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+
+  {% endblock %}
