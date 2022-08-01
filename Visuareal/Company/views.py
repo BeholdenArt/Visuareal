@@ -1,32 +1,62 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from Company.models import AddCustomer, CompanyInventory, OrderQueue, AddCompany
 from Dealer.models import AddDealer
 from Influencer.models import AddInfluencer
 
-# Create your views here.
 
 def home(request):
-	return render(request, 'base.html')
+	context = {
+		'url' : 'company', 
+		'name' : "Company's",
+	}	
+	return render(request, 'base.html', context)
 
 def customerList(request):
-
 	contents = AddCustomer.objects.all()
-	# print(contents[0].interestedProduct.all())
-	return render(request, 'customerlist.html', {'all_data' : contents})
+	context = {
+		'all_data' : contents, 
+		'extend' : 'base.html', 
+		'url' : 'company', 
+		'name' : "Company's",
+	}
+	return render(request, 'customerlist.html', context)
 
 def companyInventory(request):
 	contents = CompanyInventory.objects.all()
-	return render(request, 'inventorylist.html', {'all_data' : contents})
+	context = {
+		'all_data' : contents, 
+		'extend' : 'base.html', 
+		'url' : 'company', 
+		'name' : "Company's",
+	}	
+	return render(request, 'inventorylist.html', context)
 
 def dealerList(request):
 	contents = AddDealer.objects.all()
-	return render(request, 'dealerlist.html', {'all_data' : contents}) 
+	context = {
+		'all_data' : contents, 
+		'extend' : 'base.html',	
+		'url' : 'company', 
+		'name' : "Company's",
+	}
+	return render(request, 'dealerlist.html', context) 
 
 def influencerList(request):
 	contents = AddInfluencer.objects.all()
-	return render(request, 'influencerlist.html', {'all_data' : contents})
+	context = {
+		'all_data' : contents, 
+		'extend' : 'base.html',
+		'url' : 'company',
+		'name' : "Company's", 
+	}
+	return render(request, 'influencerlist.html', context)
 
 def orderQueue(request):
 	contents = OrderQueue.objects.all()
-	return render(request, 'orderqueue.html', {'all_data' : contents})
+	context = {
+		'all_data' : contents, 
+		'extend' : 'base.html', 
+		'url' : 'company', 
+		'name' : "Company's",
+	}
+	return render(request, 'orderqueue.html', context)
