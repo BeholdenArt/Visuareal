@@ -1,12 +1,11 @@
-{% extends 'base.html' %}
-
+{% extends extend %}
 
 {% block content %}
 <div class=" shadow-lg bg-white rounded p-3 ms-5 me-5" id="customerT">
     <div class="h-60  table-responsive" >
 
       <form method="POST" class="d-flex justify-content-between">
-        <a type="submit" name="add" onclick="window.open('ADD buttons/addcustomer.html','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
+        <a type="submit" name="add" onclick="window.open('../addCustomer','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
         <button type="submit" name="delete" href='#' class="btn btn-danger">Delete</button>
       </form>
       <span class="d-flex justify-content-center"><strong>Customers list</strong></span>
@@ -25,7 +24,7 @@
             <th scope="col">Dealer Suggested</th>
           </tr>
         </thead>
-        <tbody id="table1">
+        <tbody id="addcustomerTable">
           {% for data in all_data %}  
           <tr>
             <td>
@@ -51,11 +50,9 @@
             </td>
 
           </tr>
-
           {% endfor %}
         </tbody>
       </table>
-      
     </div>
   </div>
 
