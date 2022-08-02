@@ -21,6 +21,7 @@ def customerList(request):
 	}
 	return render(request, 'customerlist.html', context)
 
+
 def companyInventory(request):
 	contents = CompanyInventory.objects.all()
 	context = {

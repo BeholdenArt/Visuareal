@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Company',
     'Dealer',
     'Influencer',
+    'Authentication', 
 ]
 
 MIDDLEWARE = [
