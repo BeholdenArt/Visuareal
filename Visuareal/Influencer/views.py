@@ -31,15 +31,16 @@ def addCustomer(request):
 		interestedCompany = request.POST.get("interesetdCompany")
 		interestedProduct = request.POST.get("interestedProduct")
 		dealerSuggested = request.POST.get("dealerSuggested")
+		dealerName = AddDealer.objects.filter(dealerName__exact = dealerSuggested)
 		# print(type(dealerSuggested))
 		obj = AddCustomer(
 				customerName= name, customerPhoneNumber= pnumber, 
 				influencedThrough= influencedThrough, 
 				companyInterested= interestedCompany,
 				interestedProduct= interestedProduct, 
-				dealerName = dealerSuggested
+				dealerName = dealerName,
 			)
-		print(obj)
+		obj.save()
 		return HttpResponse("VALUE INSERTED")
 
 	else:
