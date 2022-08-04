@@ -12,4 +12,3 @@ class AddInfluencer(UserDocuments, UserCredentials, Points):
 		return str(self.influencerName)
 
 
-
