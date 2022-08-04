@@ -28,19 +28,24 @@ def addCustomer(request):
 		name = request.POST["name"]
 		pnumber = request.POST["pnumber"]
 		influencedThrough = request.POST.get("influencedThrough")
-		interestedCompany = request.POST.get("interesetdCompany")
-		interestedProduct = request.POST.get("interestedProduct")
+		interestedCompany = request.POST.get("interestedCompany")
+		interestedPdt = request.POST.get("interestedProducts")
 		dealerSuggested = request.POST.get("dealerSuggested")
-		# print(type(dealerSuggested))
-		obj = AddCustomer(
+		dealerName = AddDealer.objects.filter(dealerName__exact = dealerSuggested)
+		companyInterested = AddCompany.objects.filter(companyName__exact = interestedCompany)
+		influenced = AddInfluencer.objects.filter(influencerName__exact = influencedThrough)
+		productInterested = CompanyInventory.objects.exclude(productName = interestedPdt)
+		obj = AddCustomer.objects.create(
 				customerName= name, customerPhoneNumber= pnumber, 
-				influencedThrough= influencedThrough, 
-				companyInterested= interestedCompany,
-				interestedProduct= interestedProduct, 
-				dealerName = dealerSuggested
+				influencedThrough= influenced[0],
+				companyInterested= companyInterested[0],
+				dealerName = dealerName[0],
 			)
-		print(obj)
-		return HttpResponse("VALUE INSERTED")
+		for pdt in productInterested:
+			obj.interestedProduct.add(pdt)
+		obj.save()
+		return HttpResponse("Added You may close this window now")
+
 
 	else:
 		dealerList = AddDealer.objects.all() 
