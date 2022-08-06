@@ -10,6 +10,3 @@ class AddInfluencer(UserDocuments, UserCredentials, Points):
 	
 	def __str__(self):
 		return str(self.influencerName)
-
-
-

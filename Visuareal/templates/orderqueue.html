@@ -1,11 +1,11 @@
 {% extends extend %}
 
 {% block content %}
-<div class=" shadow-lg bg-white rounded p-3 ms-5 me-5" id="OrderQT">
-    <div class="h-60  table-responsive" >
+<div class="shadow-lg bg-white rounded p-3 ms-5 me-5" id="OrderQT">
+    <div class="table-responsive-custom">
 
       <form method="POST" class="d-flex justify-content-between">
-        <a type="submit" name="add" onclick="window.open('ADD buttons/orderqueue.html','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
+        <a type="submit" name="add" onclick="window.open('../orderQueueInsert','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
         <button type="submit" name="delete" href='#' class="btn btn-danger">Delete</button>
       </form>
       <span class="d-flex justify-content-center"><strong>Order queue</strong></span>
@@ -19,17 +19,18 @@
             <th scope="col">Products Ordered</th>
             <th scope="col">Order placed</th>
             <th scope="col">Company whom ordered</th>
+            <th scope="col">Ordered Quantity</th>
             <th scope="col">Placed on</th>
             <th scope="col">Expected delivery on</th>
             
           </tr>
         </thead>
         <tbody id="table1">
-          {% for data in all_data %}  
-          <tr>
+          {% for data in all_data %}
+          <tr id="#myModal-{{ forloop.counter }}">
 
             <td>
-              {{data.pk}}
+              {{ forloop.counter }}
             </td>
             <td>
               {{data.orderedProducts.all|join:', '}}
@@ -41,19 +42,20 @@
               {{data.orderTo}}
             </td>
             <td>
+              {{data.orderedQuantity}}
+            </td>
+            <td>
               {{data.placedOn}}
             </td>
             <td>
               {{data.expectedDelievery}}
             </td>
-
           </tr>
-
+          
           {% endfor %}
         </tbody>
       </table>
-      
     </div>
   </div>
 
-  {% endblock %}
+{% endblock %}
