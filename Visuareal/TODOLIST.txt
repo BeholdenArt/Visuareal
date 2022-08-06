@@ -1,0 +1,10 @@
+4th August 2022: 
+  Completed ADD BUTTON functionality of OrderQueue(dealer), Inventory(dealer) and addCustomer(influencer). 
+  
+  Remaining: 
+    Add Quantity = Integerfield() in orderQUeue model (FOR SUBSEQUENT GRAPH AGAINST INVENTORY GRAPH) : RONIT
+    Authentication System : BAIRWA
+    DELETE functionality : NIRAJ
+    Scroll and Search functionality : RONIT
+
+    POINTS SECTION : IN REST API 

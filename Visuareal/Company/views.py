@@ -54,6 +54,7 @@ def influencerList(request):
 
 def orderQueue(request):
 	contents = OrderQueue.objects.all()
+	print('aaaa'*100, contents)
 	context = {
 		'all_data' : contents, 
 		'extend' : 'base.html', 

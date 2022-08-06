@@ -56,3 +56,9 @@
     .sidebar {padding-top: 15px;}
     .sidebar a {font-size: 18px;}
   }
+
+  .table-responsive-custom{
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 500px;
+  }

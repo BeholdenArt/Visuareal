@@ -43,6 +43,7 @@ class Points(models.Model):
 
 class OrderQueue(models.Model):
 	orderedProducts = models.ManyToManyField('Company.CompanyInventory', verbose_name= "Order Placed", blank= True)
+	orderedQuantity = models.IntegerField(default=10 , blank = True)
 	orderFrom = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, verbose_name= "Dealer Who Ordered")
 	orderTo = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, verbose_name= "Company Whom Ordered")
 	placedOn = models.DateTimeField(blank= True, null= True)

@@ -22,7 +22,7 @@ def customerList(request):
 		'all_data' : contents, 
 		'extend' : 'base.html', 
 		'url' : "dealer", 
-		 'name': "Dealer's", 
+		'name': "Dealer's", 
 	}
 	return render(request, 'customerlist.html', context)
 
@@ -77,11 +77,13 @@ def addOrderQueue(request):
 		OT = request.POST.get("Companywhomordered")
 		OrderPlaced = AddDealer.objects.filter(dealerName__exact = OP)
 		OrderTo = AddCompany.objects.filter(companyName__exact = OT)
+		orderedQuantity = request.POST["orderedQuantity"]
 		Placedon = request.POST["Placedon"]
 		Expecteddeliveryon = request.POST["Expecteddeliveryon"]
 		obj = OrderQueue.objects.create(
 			orderFrom = OrderPlaced[0],
 			orderTo = OrderTo[0],
+			orderedQuantity = orderedQuantity,
 			placedOn = Placedon,
 			expectedDelievery = Expecteddeliveryon,
 		)
@@ -90,7 +92,7 @@ def addOrderQueue(request):
 
 		obj.save()
 		print(obj)
-		return HttpResponse("Added You may close this window now")
+		return HttpResponse("Added, You may close this window now")
 
 	else:
 		ProductName = CompanyInventory.objects.all()
