@@ -11,10 +11,9 @@ class DealerInventoryInline(admin.StackedInline):
 	extra = 0 
 
 class AddDealerAdmin(admin.ModelAdmin):
-	from Company.admin import AddCustomerInline
-	inlines = [DealerInventoryInline, AddCustomerInline]
+	from Company.admin import AddCustomerInline, OrderQueueInline
+	inlines = [DealerInventoryInline, AddCustomerInline, OrderQueueInline]
 	model = AddDealer
 
 admin.site.register(DealerInventory, DealerInventoryAdmin)
 admin.site.register(AddDealer, AddDealerAdmin)
-
