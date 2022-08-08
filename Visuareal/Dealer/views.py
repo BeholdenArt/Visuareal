@@ -2,50 +2,44 @@ from django.shortcuts import render
 from Dealer.models import DealerInventory 
 from Company.models import AddCustomer, OrderQueue
 from django.http import HttpResponse
-
+from django.contrib.auth.decorators import login_required
 from Dealer.models import AddDealer
 # Create your views here.
 
+context = {}
 
-
+@login_required(login_url= "login")
 def home(request):
-	context = {
-		 'url' : "dealer", 
-		 'name': "Dealer's", 
-	}
+	global context
+	context['url'] = 'dealer'
+	context['name'] = "Dealer's" 
 	return render(request, 'base.html', context)
-
+ 
+@login_required(login_url= "login")
 def customerList(request):
+	global context
 	contents = AddCustomer.objects.all()
-	context = {
-		'all_data' : contents, 
-		'extend' : 'base.html', 
-		'url' : "dealer", 
-		 'name': "Dealer's", 
-	}
+	context['all_data']= contents
 	return render(request, 'customerlist.html', context)
 
+
+@login_required(login_url= "login")
 def dealerInventory(request):
+	global context
 	contents = DealerInventory.objects.all()
-	context = {
-		'all_data' : contents,
-		'extend' : 'base.html', 
-		'url' : "dealer", 
-		 'name': "Dealer's",  
-	}
+	context['all_data']= contents
 	return render(request, 'inventorylist.html', context)
 
+@login_required(login_url= "login")
 def orderQueue(request):
+	global context
 	contents = OrderQueue.objects.all()
-	context = {
-		'all_data' : contents, 
-		'extend' : 'base.html', 
-		'url' : "dealer", 
-		'name': "Dealer's", 
-	}
+	context['all_data']= contents
 	return render(request, 'orderqueue.html', context)
 
+@login_required(login_url= "login")
 def addDealerInventory(request):
+	global context
 	if request.method == "POST":
 		ProductName = request.POST["ProductName"]
 		ProductCategory = request.POST["ProductCategory"]
@@ -62,10 +56,8 @@ def addDealerInventory(request):
 		return HttpResponse("ITS ALIVE")
 	else:
 		DealerName = AddDealer.objects.all()
-		context = {
-			'DealerName' : DealerName,
-			'extend' : 'popup.html',
-		}
+		context['all_data']= contents
+
 		return render(request, 'inventoryListInsert.html', context)
 
 # def addorderQueue(request):

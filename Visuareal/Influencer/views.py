@@ -1,27 +1,42 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Company.models import AddCustomer, AddCompany, CompanyInventory
 from Dealer.models import AddDealer
+from django.contrib.auth.decorators import login_required
 from Influencer.models import AddInfluencer
 from django.http import HttpResponse
+from Users.models import User
 # Create your views here.
 
 
-def home(request):
-	context = {
-		'url' : 'influencer',
-		'name': "Influencer's",
-	}
-	return render(request, 'base.html', context)
+def home(request, ref=''):
+	if ref: 
+		user = User.objects.get(referrelCode= ref)
+		if user is not None: 
+			context = {
+				'url' : 'influencer',
+				'user': user,
+				'ref': ref
+			}
+			return render(request, 'base.html', context)
 
-def customerList(request):
-	contents = AddCustomer.objects.all()
-	context = {
-		'all_data' : contents, 
-		'extend' : 'base.html', 
-		'url' : "influencer", 
-		'name': "Influencer's",
-	}
-	return render(request, 'customerlist.html', context)
+	else:
+		return redirect('login')
+
+def customerList(request, ref):
+	if ref: 
+		user = User.objects.get(referrelCode= ref) 
+		if user is not None: 
+			return HttpResponse("CUSTOMER LIST ENTERED")
+	else:
+		return redirect('login')
+	# contents = AddCustomer.objects.all()
+	# context = {
+	# 	'all_data' : contents, 
+	# 	'extend' : 'base.html', 
+	# 	'url' : "influencer", 
+	# 	'name': "Influencer's",
+	# }
+	# return render(request, '<>/customerlist.html', context)
 
 def addCustomer(request):
 	if request.method == "POST": 
@@ -38,7 +53,7 @@ def addCustomer(request):
 				influencedThrough= influencedThrough, 
 				companyInterested= interestedCompany,
 				interestedProduct= interestedProduct, 
-				dealerName = dealerName,
+				dealerName = dealerName[0],
 			)
 		obj.save()
 		return HttpResponse("VALUE INSERTED")

@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,7 +37,8 @@
                 <img style="width: 100%; max-height: 30px;" src="{% static 'img/logo.png' %}"> 
               </div>
                 <!--Log out-->
-                <a class="nav-link text-white" href="/authentication">Log out</a> 
+                <a class="nav-link text-white" href="{% url 'logout' %}">Log out</a> 
+                
             </div>
       </header>
       <!-- Side Navbar -->
@@ -52,7 +55,7 @@
         <!-- Sidebar Navidation Menus-->
         <!-- <span class="text-uppercase text-gray-400 text-xs letter-spacing-0 mx-3 px-2 heading">Main</span> -->
         <ul class="list-unstyled py-4" id="list">
-          <li class="sidebar-item"><a class="sidebar-link" href="/{{url}}"> 
+          <li class="sidebar-item"><a class="sidebar-link" href="{{user.referrelCode}}"> 
               <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
                 <use class="button button2"> </use>
               </svg>Home 
@@ -60,7 +63,7 @@
           </li><br>
 
             {% if url == "dealer" or url == "company" or url == "influencer" %}
-            <li class="sidebar-item"><a class="sidebar-link" href="/{{url}}/customerList"> 
+            <li class="sidebar-item"><a class="sidebar-link" href="{% url 'customerList' ref=ref %}"> 
                 <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
                   <use class="button button2"> </use>
                 </svg>Customer list
@@ -68,7 +71,7 @@
             </li> <br>{% endif %}
 
             {% if url == "company" %}
-            <li class="sidebar-item"><a class="sidebar-link" href="/{{url}}/influencerList"> 
+            <li class="sidebar-item"><a class="sidebar-link" href="/{{ref}}/influencerList"> 
                 <svg class="svg-icon svg-icon-sm svg-icon-heavy me-xl-2">
                   <use class="button button2"> </use>
                 </svg>Influencer list

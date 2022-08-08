@@ -1,27 +1,32 @@
-{% extends extend %}
+{% extends 'Authentication/base.html' %}
 
 {% block content %}
-<section class="login">
-	<div class="login_box">
-		<div class="left">
-			<div class="contact">
-				<form action="">
-					<h2>Log In</h2>
-					<input type="text" placeholder="USERNAME">
-					<input type="text" placeholder="PASSWORD">
-					<button class="submit">LOG IN</button><br>
-                    <div class="newUser">
-                        <p><b>New User?</b> <a href="signup"> Sign up </a></p>
-                    </div>
-				</form>
-			</div>    
-		</div>
-		<div class="right">
-			<div class="right-text">
-				<h2>VISUAREAL</h2>
-				<h5>A XYZ BASED CREATIVE AGENCEY</h5>
-			</div>
-		</div> 
-	</div>
-</section>   
-{% endblock %}
+  <section>
+    
+      <div style="text-align: center;">
+        <div class=" shadow-lg bg-white rounded p-3 ms-5 me-5" style="text-align: left; display: inline-block; ">
+          <h2 style="text-align:center">Log in</h2><br>
+          <form action="#" method="post">
+            {% csrf_token %}
+            <label for="origin">Select your origin</label>
+            
+          <select name="origin"  class="form-control" id="origin">
+            <option value="Dealer">Dealer</option>
+            <option value="Influencer">Influencer</option> 
+          </select><br>
+
+                    <label for="name">Email: </label>
+                    <input type="text"  class="form-control" name="email" id="email"> <br>
+                    <label for="pwd">Password: </label>
+                    <input type="text"  class="form-control" name="pwd" id="pwd"> <br>
+                    <button class="form-control btn btn-success">LOG IN</button><br><br>
+                        <div>
+                            <p><b>New User?</b> <a href="{% url 'signup' %}"> Sign up </a></p>
+                        </div>
+                  </form>
+        </div>
+      </div>
+    </div>
+</section>
+
+{% endblock content %}
