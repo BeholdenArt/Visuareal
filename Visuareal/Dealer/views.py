@@ -46,7 +46,7 @@ def orderQueue(request):
 	}
 	return render(request, 'orderqueue.html', context)
 
-def addDealerInventory(request):
+def addInventory(request):
 	if request.method == "POST":
 		ProductName = request.POST["ProductName"]
 		ProductCategory = request.POST["ProductCategory"]
@@ -60,14 +60,20 @@ def addDealerInventory(request):
 			dealer = dealer[0],
 		)
 		obj.save()
-		return redirect('dealer/orderQueue/')
+		return HttpResponse("Added, You may close this window now")
 	else:
 		DealerName = AddDealer.objects.all()
 		context = {
 			'DealerName' : DealerName,
 			'extend' : 'popup.html',
 		}
-		return render(request, 'inventoryListInsert.html', context)
+		return render(request, 'inventoryInsert.html', context)
+
+def deleteInventory(request, data_id):
+	event = DealerInventory.objects.get(pk=data_id)
+	event.delete()
+	return redirect ('../inventoryList')
+
 
 def addOrderQueue(request):
 	if request.method == "POST":
@@ -105,3 +111,8 @@ def addOrderQueue(request):
 			'extend' : 'popup.html',
 		}
 		return render(request, 'orderQueueInsert.html', context)
+
+def deleteOrderQueue(request, data_id):
+	event = OrderQueue.objects.get(pk=data_id)
+	event.delete()
+	return redirect('../orderQueue')

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Company.models import AddCustomer, AddCompany, CompanyInventory
 from Dealer.models import AddDealer
 from Influencer.models import AddInfluencer
@@ -60,3 +60,8 @@ def addCustomer(request):
 			'extend' : 'popup.html',  
 		}
 		return render(request, 'customerListInsert.html', context)
+
+def deleteCustomer(request, data_id):
+	event = AddCustomer.objects.get(pk=data_id)
+	event.delete()
+	return redirect('../customerList')

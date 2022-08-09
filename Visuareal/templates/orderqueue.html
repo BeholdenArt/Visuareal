@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="shadow-lg bg-white rounded p-3 ms-5 me-5" id="OrderQT">
-    <div class="table-responsive-custom">
+    <div class="h-60 table-responsive-custom">
 
       <form method="POST" class="d-flex justify-content-between">
         <a type="submit" name="add" onclick="window.open('../orderQueueInsert','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
@@ -22,12 +22,13 @@
             <th scope="col">Ordered Quantity</th>
             <th scope="col">Placed on</th>
             <th scope="col">Expected delivery on</th>
+            <th scope="col">Actions</th>
             
           </tr>
         </thead>
         <tbody id="table1">
           {% for data in all_data %}
-          <tr id="#myModal-{{ forloop.counter }}">
+          <tr>
 
             <td>
               {{ forloop.counter }}
@@ -49,6 +50,9 @@
             </td>
             <td>
               {{data.expectedDelievery}}
+            </td>
+            <td>
+              <a type="button" name="delete" href="{% url 'deleteOrderQueue' data.pk %}" class="btn btn-danger">Remove</a>
             </td>
           </tr>
           

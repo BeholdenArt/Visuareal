@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class=" shadow-lg bg-white rounded p-3 ms-5 me-5" id="customerT">
-    <div class="h-60  table-responsive" >
+    <div class="h-60  table-responsive-custom" >
 
       <form method="POST" class="d-flex justify-content-between">
         <a type="submit" name="add" onclick="window.open('../addCustomer','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
@@ -22,6 +22,7 @@
             <th scope="col">Interseted company</th>
             <th scope="col">Influenced through</th>
             <th scope="col">Dealer Suggested</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody id="addcustomerTable">
@@ -47,6 +48,9 @@
             </td>
             <td>
               {{data.dealerName}}
+            </td>
+            <td>
+              <a type="button" name="delete" href="{% url 'deleteCustomer' data.pk %}" class="btn btn-danger">Remove</a>
             </td>
 
           </tr>
