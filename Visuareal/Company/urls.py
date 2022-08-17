@@ -8,5 +8,6 @@ urlpatterns = [
 	path('dealerList/', views.dealerList, name="dealerList"),  
 	path('influencerList/', views.influencerList, name="influencerList"), 
 	path('orderQueue/', views.orderQueue, name="orderQueue"),
-	path('company-inventory-chart/', views.inventory_chart, name='company-inventory-chart'),
+	path('company-inventory-chart', views.inventory_chart, name='company-inventory-chart'),
+	# path('company-orderQueue-chart/', views.order_queue_chart, name='company-orderQueue-chart'),
 ]
