@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from Dealer.models import DealerInventory 
 from Company.models import AddCustomer, OrderQueue, CompanyInventory, AddCompany
+from Influencer.models import AddInfluencer
 from django.shortcuts import redirect
 from django.http import HttpResponse
 
@@ -24,7 +25,7 @@ def customerList(request):
 		'url' : "dealer", 
 		'name': "Dealer's", 
 	}
-	return render(request, 'customerlist.html', context)
+	return render(request, 'dealer/customerlist.html', context)
 
 def dealerInventory(request):
 	contents = DealerInventory.objects.all()
@@ -34,7 +35,7 @@ def dealerInventory(request):
 		'url' : "dealer", 
 		 'name': "Dealer's",  
 	}
-	return render(request, 'inventorylist.html', context)
+	return render(request, 'dealer/inventorylist.html', context)
 
 def orderQueue(request):
 	contents = OrderQueue.objects.all()
@@ -44,7 +45,7 @@ def orderQueue(request):
 		'url' : "dealer", 
 		'name': "Dealer's", 
 	}
-	return render(request, 'orderqueue.html', context)
+	return render(request, 'dealer/orderqueue.html', context)
 
 def addInventory(request):
 	if request.method == "POST":
@@ -67,7 +68,7 @@ def addInventory(request):
 			'DealerName' : DealerName,
 			'extend' : 'popup.html',
 		}
-		return render(request, 'inventoryInsert.html', context)
+		return render(request, 'dealer/inventoryInsert.html', context)
 
 def deleteInventory(request, data_id):
 	event = DealerInventory.objects.get(pk=data_id)
@@ -110,9 +111,52 @@ def addOrderQueue(request):
 			'Companywhomordered' : OrderTo,
 			'extend' : 'popup.html',
 		}
-		return render(request, 'orderQueueInsert.html', context)
+		return render(request, 'dealer/orderQueueInsert.html', context)
 
 def deleteOrderQueue(request, data_id):
 	event = OrderQueue.objects.get(pk=data_id)
 	event.delete()
 	return redirect('../orderQueue')
+
+def addCustomer(request):
+	if request.method == "POST": 
+		name = request.POST["name"]
+		pnumber = request.POST["pnumber"]
+		influencedThrough = request.POST.get("influencedThrough")
+		interestedCompany = request.POST.get("interestedCompany")
+		interestedPdt = request.POST.get("interestedProducts")
+		dealerSuggested = request.POST.get("dealerSuggested")
+		dealerName = AddDealer.objects.filter(dealerName__exact = dealerSuggested)
+		companyInterested = AddCompany.objects.filter(companyName__exact = interestedCompany)
+		influenced = AddInfluencer.objects.filter(influencerName__exact = influencedThrough)
+		productInterested = CompanyInventory.objects.exclude(productName = interestedPdt)
+		obj = AddCustomer.objects.create(
+				customerName= name, customerPhoneNumber= pnumber, 
+				influencedThrough= influenced[0],
+				companyInterested= companyInterested[0],
+				dealerName = dealerName[0],
+			)
+		for pdt in productInterested:
+			obj.interestedProduct.add(pdt)
+		obj.save()
+		return HttpResponse("Added You may close this window now")
+
+
+	else:
+		dealerList = AddDealer.objects.all() 
+		influencerList = AddInfluencer.objects.all() 
+		companyList = AddCompany.objects.all() 
+		companyInventory = CompanyInventory.objects.all()
+		context = {
+			'dealerList' : dealerList,
+			'influencerList' : influencerList,
+			'companyList' : companyList, 
+			'companyInventory' : companyInventory, 
+			'extend' : 'popup.html',  
+		}
+		return render(request, 'dealer/customerListInsert.html', context)
+
+def deleteCustomer(request, data_id):
+	event = AddCustomer.objects.get(pk=data_id)
+	event.delete()
+	return redirect('../customerList')

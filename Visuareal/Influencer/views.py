@@ -21,7 +21,7 @@ def customerList(request):
 		'url' : "influencer", 
 		'name': "Influencer's",
 	}
-	return render(request, 'customerlist.html', context)
+	return render(request, 'influencer/customerlist.html', context)
 
 def addCustomer(request):
 	if request.method == "POST": 
@@ -59,7 +59,7 @@ def addCustomer(request):
 			'companyInventory' : companyInventory, 
 			'extend' : 'popup.html',  
 		}
-		return render(request, 'customerListInsert.html', context)
+		return render(request, 'influencer/customerListInsert.html', context)
 
 def deleteCustomer(request, data_id):
 	event = AddCustomer.objects.get(pk=data_id)
