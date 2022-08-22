@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Company.models import AddCustomer, AddCompany, CompanyInventory
 from Dealer.models import AddDealer
 from Influencer.models import AddInfluencer
@@ -7,11 +7,16 @@ from django.http import HttpResponse
 
 
 def home(request):
+	cont = AddCustomer.objects.count()
+	contents = AddCustomer.objects.all().order_by('-id')[:5]
 	context = {
+		'all_data' : contents,
+		'customer' : cont,
 		'url' : 'influencer',
 		'name': "Influencer's",
+		'extend' : "base.html"
 	}
-	return render(request, 'base.html', context)
+	return render(request, 'influencerhome.html', context)
 
 def customerList(request):
 	contents = AddCustomer.objects.all()
@@ -21,7 +26,7 @@ def customerList(request):
 		'url' : "influencer", 
 		'name': "Influencer's",
 	}
-	return render(request, 'customerlist.html', context)
+	return render(request, 'influencer/customerlist.html', context)
 
 def addCustomer(request):
 	if request.method == "POST": 
@@ -59,4 +64,9 @@ def addCustomer(request):
 			'companyInventory' : companyInventory, 
 			'extend' : 'popup.html',  
 		}
-		return render(request, 'customerListInsert.html', context)
+		return render(request, 'influencer/customerListInsert.html', context)
+
+def deleteCustomer(request, data_id):
+	event = AddCustomer.objects.get(pk=data_id)
+	event.delete()
+	return redirect('../customerList')

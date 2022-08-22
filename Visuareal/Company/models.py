@@ -2,22 +2,22 @@ from django.db import models
 
 # Create your models here.
 class UserCredentials(models.Model):
-    username = models.CharField(max_length= 30, verbose_name= "Username")
-    email = models.EmailField(null= True, blank= True, verbose_name= "Email")
-    password = models.CharField(max_length=20, verbose_name= "Password")
+	username = models.CharField(max_length= 30, verbose_name= "Username")
+	email = models.EmailField(null= True, blank= True, verbose_name= "Email")
+	password = models.CharField(max_length=20, verbose_name= "Password")
 
-    class Meta: 
-    	abstract = True
+	class Meta: 
+		abstract = True
 
 class UserDocuments(models.Model):
-    panNumber = models.CharField(max_length= 30, verbose_name= "Pan Number")
-    panPhoto = models.ImageField(verbose_name= "Pan Photo")
+	panNumber = models.CharField(max_length= 30, verbose_name= "Pan Number")
+	panPhoto = models.ImageField(verbose_name= "Pan Photo")
 
-    def __str__(self):
-    	return str(self.panNumber)
+	def __str__(self):
+		return str(self.panNumber)
 
-    class Meta: 
-    	abstract = True
+	class Meta: 
+		abstract = True
 
 class Inventory(models.Model):
 	productName = models.CharField(max_length= 255, verbose_name= "Product Name")
@@ -43,6 +43,7 @@ class Points(models.Model):
 
 class OrderQueue(models.Model):
 	orderedProducts = models.ManyToManyField('Company.CompanyInventory', verbose_name= "Order Placed", blank= True)
+	orderedQuantity = models.IntegerField(default=10 , blank = True)
 	orderFrom = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, verbose_name= "Dealer Who Ordered")
 	orderTo = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, verbose_name= "Company Whom Ordered")
 	placedOn = models.DateTimeField(blank= True, null= True)

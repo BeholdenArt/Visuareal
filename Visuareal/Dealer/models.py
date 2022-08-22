@@ -5,7 +5,7 @@ from Company.models import Inventory, Points, UserDocuments, UserCredentials
 
 # Create your models here.
 
-class DealerInventory(Inventory): 
+class DealerInventory(Inventory):
 	dealer = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, blank= True)
 
 class AddDealer(UserCredentials, UserDocuments, Points):
