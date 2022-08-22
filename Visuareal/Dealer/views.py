@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Dealer.models import DealerInventory 
 from Company.models import AddCustomer, OrderQueue, CompanyInventory, AddCompany
 from Influencer.models import AddInfluencer
@@ -6,16 +6,55 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 
 from Dealer.models import AddDealer
+from django.http import HttpResponse
+import json 
+from django.http import JsonResponse
+from django.core import serializers
+from json import dumps
 # Create your views here.
 
-
-
 def home(request):
+	contents = AddCustomer.objects.count()
+	inventory = DealerInventory.objects.count()
+	order = OrderQueue.objects.count()
 	context = {
+		'customer' : contents,
+		'inventory' : inventory,
+		'order' : order,
+		'extend': 'base.html', 
 		 'url' : "dealer", 
 		 'name': "Dealer's", 
 	}
-	return render(request, 'base.html', context)
+	return render(request, 'dealerhome.html', context)
+
+def inventory_chart(request):
+    labels = []
+    data = []
+
+    queryset = DealerInventory.objects.values('productName', 'productQuantity')
+    for entry in queryset:
+        labels.append(entry['productName'])
+        data.append(entry['productQuantity'])
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+# def order_queue_chart(request):
+#     labels2 = []
+#     data2 = []
+
+#     queryset = OrderQueue.objects.values('orderedProducts', 'orderedQuantity')
+#     for entry in queryset:
+#         labels2.append(entry['orderedProducts'])
+#         data2.append(entry['orderedQuantity'])
+    
+#     return JsonResponse(data={
+#         'labels2': labels2,
+#         'data2': data2,
+#     })
+
 
 def customerList(request):
 	contents = AddCustomer.objects.all()
@@ -23,7 +62,7 @@ def customerList(request):
 		'all_data' : contents, 
 		'extend' : 'base.html', 
 		'url' : "dealer", 
-		'name': "Dealer's", 
+		 'name': "Dealer's", 
 	}
 	return render(request, 'dealer/customerlist.html', context)
 
@@ -43,7 +82,7 @@ def orderQueue(request):
 		'all_data' : contents, 
 		'extend' : 'base.html', 
 		'url' : "dealer", 
-		'name': "Dealer's", 
+		 'name': "Dealer's", 
 	}
 	return render(request, 'dealer/orderqueue.html', context)
 

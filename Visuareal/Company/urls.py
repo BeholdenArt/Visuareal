@@ -14,4 +14,5 @@ urlpatterns = [
 	path('deleteCompanyInventory/<data_id>', views.deleteInventory, name="deleteCompanyInventory"),
 	path('orderQueueInsert/', views.addOrderQueue, name="orederQueueInsert"),
 	path('deleteOrderQueue/<data_id>', views.deleteOrderQueue, name="deleteOrderQueue"),
+	path('company-inventory-chart', views.inventory_chart, name='company-inventory-chart'),
 ]

@@ -7,11 +7,16 @@ from django.http import HttpResponse
 
 
 def home(request):
+	cont = AddCustomer.objects.count()
+	contents = AddCustomer.objects.all().order_by('-id')[:5]
 	context = {
+		'all_data' : contents,
+		'customer' : cont,
 		'url' : 'influencer',
 		'name': "Influencer's",
+		'extend' : "base.html"
 	}
-	return render(request, 'base.html', context)
+	return render(request, 'influencerhome.html', context)
 
 def customerList(request):
 	contents = AddCustomer.objects.all()
