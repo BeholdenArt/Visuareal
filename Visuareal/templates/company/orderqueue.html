@@ -3,11 +3,12 @@
 {% block content %}
 <div class="shadow-lg bg-white rounded p-3 ms-5 me-5" id="OrderQT">
     <div class="h-60 table-responsive-custom">
-
-      <form method="POST" class="d-flex justify-content-between">
-        <a type="submit" name="add" onclick="window.open('../orderQueueInsert','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
-        <button type="submit" name="delete" href='#' class="btn btn-danger">Delete</button>
-      </form>
+      <div class="d-flex justify-content-between">
+      {% comment %} <form method="POST">
+        <a type="submit" name="add" onclick="window.open('../../companyOrderQueueInsert/{{ref}}','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
+      </form> {% endcomment %}
+      <a type="button" name="delete" href="{% url 'companyDeleteOrderQueueAll' ref %}" class="btn btn-danger">Delete All</a>
+    </div>
       <span class="d-flex justify-content-center"><strong>Order queue</strong></span>
 
       <table  class="table table-striped">
@@ -18,7 +19,7 @@
             <th scope="col">#</th>
             <th scope="col">Products Ordered</th>
             <th scope="col">Order placed</th>
-            <th scope="col">Company whom ordered</th>
+            {% comment %} <th scope="col">Company whom ordered</th> {% endcomment %}
             <th scope="col">Ordered Quantity</th>
             <th scope="col">Placed on</th>
             <th scope="col">Expected delivery on</th>
@@ -34,14 +35,14 @@
               {{ forloop.counter }}
             </td>
             <td>
-              {{data.orderedProducts.all|join:', '}}
+              {{data.orderedProducts}}
             </td>
             <td>
-              {{data.orderFrom}}
+              {{data.user}}
             </td>
-            <td>
+            {% comment %} <td>
               {{data.orderTo}}
-            </td>
+            </td> {% endcomment %}
             <td>
               {{data.orderedQuantity}}
             </td>
@@ -52,7 +53,8 @@
               {{data.expectedDelievery}}
             </td>
             <td>
-              <a type="button" name="delete" href="{% url 'deleteOrderQueue' data.pk %}" class="btn btn-danger">Remove</a>
+              <a type="button" name="delete" href="{% url 'companyDeleteOrderQueue' ref data.pk %}" class="btn btn-danger">Remove</a>
+              <a type="button" name="delete" href="{% url 'companyapproveOrderQueue' ref data.pk %}" class="btn btn-danger">Approve</a>
             </td>
           </tr>
           

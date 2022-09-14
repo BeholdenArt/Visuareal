@@ -8,23 +8,26 @@
           <form action="#" method="post" id="submit">
             {% csrf_token %}
               <label for="ProductName">Product Name: </label>
-              <select id="multi_option" class="form-control" multiple class="native-select" data-silent-initial-value-set="false" name="ProductName">
+              <select id="multi_option" class="form-control" class="native-select" data-silent-initial-value-set="false" name="ProductName">
                 {% for product in ProductName %}
                   <option value="{{product}}">{{product.productName}}</option>
                 {% endfor %}
               </select> <br></br>
-              <label for="OrderPlaced">Order Placed: </label>
+  
+              {% comment %} <label for="OrderPlaced">Order Placed: </label>
               <select class="form-control" name="OrderPlaced" id="OrderPlaced">
                 {% for dealer in OrderPlaced %}
-                  <option value="{{dealer}}">{{dealer.dealerName}}
+                  <option value="{{dealer}}">{{dealer.dealerName}} 
                 {% endfor %}
               </select> <br></br>
-              <label for="Companywhomordered">Company whom ordered: </label>
+              <label for="Companywhomordered">Company whom ordered: </label> 
+  
               <select class="form-control" name="Companywhomordered" id="Companywhomordered">
                 {% for company in Companywhomordered %}
                   <option value="{{company}}">{{company.companyName}}
                 {% endfor %}
-              </select> <br></br>
+              </select> <br></br> {% endcomment %}
+              
               <label for="orderedQuantity">Ordered Quantity: </label>
               <input type="text"  class="form-control" name="orderedQuantity" id="orderedQuantity"> <br>
               <label for="Placedon">Placed on: </label>

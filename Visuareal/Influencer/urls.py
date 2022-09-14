@@ -2,8 +2,12 @@ from django.urls import path
 from Influencer import views
 
 urlpatterns = [
-	path('', views.home, name="home"), 
-	path('customerList/', views.customerList, name='customerList'), 
-	path('addCustomer/', views.addCustomer, name='addCustomer'),
-	path('deleteCustomer/<data_id>', views.deleteCustomer, name="deleteCustomer"),
+
+	# Home 
+	path('<slug:ref>/', views.home, name="home"), 
+	
+	# Customer List 
+	path('influencerCustomerList/<slug:ref>/', views.influencerCustomerList, name='influencerCustomerList'), 
+	path('influencerAddCustomer/<slug:ref>/', views.influencerAddCustomer, name='influencerAddCustomer'),
+	path('influencerDeleteCustomer/<slug:ref>/<data_id>', views.deleteCustomer, name="influencerDeleteCustomer"),
 ]

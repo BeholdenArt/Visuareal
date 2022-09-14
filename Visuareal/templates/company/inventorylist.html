@@ -3,11 +3,12 @@
 {% block content%}
 <div class=" shadow-lg bg-white rounded p-3 ms-5 me-5" id="inventoryT">
     <div class="h-60  table-responsive-custom" >
-            
+                <div class="d-flex justify-content-between">
                   <form method="POST" class="d-flex justify-content-between">
-                    <a type="submit" name="add" onclick="window.open('../addInventory','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
-                    <button type="submit" name="delete" href='#' class="btn btn-danger">Delete</button>
+                    <a type="submit" name="add" onclick="window.open('../../companyAddInventory/{{ref}}','popup','width=600,height=600');"  class="btn btn-success">ADD</a>
                   </form>
+                  <a type="button" name="delete" href="{% url 'companyDeleteInventoryAll' ref %}" class="btn btn-danger">Delete All</a>
+                </div>
                   <span class="d-flex justify-content-center"><strong>Inventory</strong></span>
   
                   <table  class="table table-striped">
@@ -39,7 +40,7 @@
                           {{data.productQuantity}}
                         </td>
                         <td>
-                          <a type="button" name="delete" href="{% url 'deleteCompanyInventory' data.pk %}" class="btn btn-danger">Remove</a>
+                          <a type="button" name="delete" href="{% url 'companyDeleteInventory' ref data.pk %}" class="btn btn-danger">Remove</a>
                         </td>
                       </tr>
                       {% endfor %}

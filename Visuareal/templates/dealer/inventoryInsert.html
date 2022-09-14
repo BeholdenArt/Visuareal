@@ -14,13 +14,16 @@
               <input type="text"  class="form-control" name="ProductCategory" id="ProductCategory"> <br>
               <label for="ProductQuantity">Product Quantity: </label>
               <input type="text"  class="form-control" name="ProductQuantity" id="ProductQuantity"> <br>
-              <label for="DealerName">Dealer name: </label>
-              <select name="DealerName"  class="form-control" id="DealerName">
+              {% comment %} <select name="DealerName"  class="form-control" id="DealerName">
                 {% for dealer in DealerName %}
                   <option value="{{dealer}}">{{dealer.dealerName}}</option> 
-                {% endfor %}
-              </select><br>
-              {% comment %} <label for="CompanyName">Company name: </label>
+                {% endfor %} {% endcomment %}
+              {% comment %} </select><br>
+              <label name="UserSelected" id="UserSelected">User </label>
+              <input type="text", class="form-control" name='UserSelected' id='UserSelected' placeholder={{ref}} > <br> {% endcomment %}
+
+
+                {% comment %} <label for="CompanyName">Company name: </label>
               <select name="CompanyName"  class="form-control" id="CompanyName">
                 {% for company in CompanyName %}
                   <option value="{{company}}">{{company.companyName}}</option> 

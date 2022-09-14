@@ -14,18 +14,22 @@
               <input type="text"  class="form-control" name="ProductCategory" id="ProductCategory"> <br>
               <label for="ProductQuantity">Product Quantity: </label>
               <input type="text"  class="form-control" name="ProductQuantity" id="ProductQuantity"> <br>
+              <label for="ProductQuantity">Price: </label>
+              <input type="text"  class="form-control" name="Price" id="Price"> <br>
+              <label for="ProductQuantity">Point: </label>
+              <input type="text"  class="form-control" name="Point" id="Point"> <br>
               {% comment %} <label for="DealerName">Dealer name: </label>
               <select name="DealerName"  class="form-control" id="DealerName">
                 {% for dealer in DealerName %}
                   <option value="{{dealer}}">{{dealer.dealerName}}</option> 
                 {% endfor %}
               </select><br> {% endcomment %}
-              <label for="CompanyName">Company name: </label>
+              {% comment %} <label for="CompanyName">Company name: </label>
               <select name="CompanyName"  class="form-control" id="CompanyName">
                 {% for company in CompanyName %}
                   <option value="{{company}}">{{company.companyName}}</option> 
                 {% endfor %}
-              </select><br>
+              </select><br> {% endcomment %}
               <input type="button" class="form-control btn btn-success" value="Submit"  onclick="closeSelf();"/>
           </form>
       </div>
