@@ -16,19 +16,25 @@
             <th scope="col">Name</th>
             <th scope="col">Referrel Code</th>
             <th scope="col">Email</th>
-            <th scope="col">Password</th>
+            <th scope="col">GSTIN</th>
             <th scope="col">Pan Number</th>
             <th scope="col">Points</th> 
+            <th scope="col">Remove</th>
       </tr>
      </thead>
      <tbody id="table1">
+      {% comment %} {% for data in all_data %}
+        {{data.first_name}}
+      {% endfor %} {% endcomment %}
+      {% comment %} {{all_data.last_name}} {% endcomment %}
+
           {% for data in all_data %}  
           <tr>
             <td>
-              {{data.pk}}
+              {{forloop.counter}}
             </td>
             <td>
-              {{data.influencerName}}
+              {{data.first_name}}
             </td>
             <td>
               {{data.referrelCode}}
@@ -37,18 +43,24 @@
               {{data.email}}
             </td>
             <td>
-              {{data.password}}
+              {{data.gstinNumber}}
             </td>
             <td>
               {{data.panNumber}}
             </td>
             <td>
-              {{data.totalPoint}}
+              {{data.totalPoint}} 
+            </td>
+            <td>
+              <a type="button" name="delete" href="{% url 'deleteInfluencer' ref data.pk %}" class="btn btn-danger">Remove</a>
             </td>
 
           </tr>
 
           {% endfor %}
+
+
+
         </tbody>
      </table>
     </div>

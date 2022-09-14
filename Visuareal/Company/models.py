@@ -23,6 +23,8 @@ class Inventory(models.Model):
 	productName = models.CharField(max_length= 255, verbose_name= "Product Name")
 	productCategory = models.CharField(max_length= 255, verbose_name= "Product Category")
 	productQuantity = models.CharField(max_length= 255, verbose_name= "Product Quantity")
+	price = models.IntegerField(verbose_name= "Product Price" , default=5000)
+	point = models.IntegerField(default=5, verbose_name= "Product Ponits", blank=True, null=True)
 
 	def __str__(self):
 		return str(self.productName)
@@ -30,35 +32,38 @@ class Inventory(models.Model):
 	class Meta: 
 		abstract = True
 
-class Points(models.Model):
-	totalPoint = models.IntegerField(default= 0, verbose_name= "Total Point")
-	createdOn = models.DateTimeField(auto_now_add = True, verbose_name= "Created On")
-	updatedOn = models.DateTimeField(auto_now= True, verbose_name= "Last Updated")
+# class Points(models.Model):
+# 	totalPoint = models.IntegerField(default= 0, verbose_name= "Total Point")
+# 	createdOn = models.DateTimeField(auto_now_add = True, verbose_name= "Created On")
+# 	updatedOn = models.DateTimeField(auto_now= True, verbose_name= "Last Updated")
 
-	def __str__(self):
-		return str(self.totalPoint)
+# 	def __str__(self):
+# 		return str(self.totalPoint)
 
-	class Meta: 
-		abstract = True
+# 	class Meta: 
+# 		abstract = True
 
 class OrderQueue(models.Model):
-	orderedProducts = models.ManyToManyField('Company.CompanyInventory', verbose_name= "Order Placed", blank= True)
+	user = models.ForeignKey('Users.User', on_delete=models.CASCADE)
+	orderedProducts = models.ForeignKey('Company.CompanyInventory', on_delete= models.CASCADE, verbose_name= "Order Placed", blank= True, null= True)
 	orderedQuantity = models.IntegerField(default=10 , blank = True)
-	orderFrom = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, verbose_name= "Dealer Who Ordered")
-	orderTo = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, verbose_name= "Company Whom Ordered")
 	placedOn = models.DateTimeField(blank= True, null= True)
 	expectedDelievery = models.DateTimeField(blank= True, null= True)
+	orderValue = models.BigIntegerField(default= 0, blank= True)
+	# orderFrom = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, verbose_name= "Dealer Who Ordered")
+	# orderTo = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, verbose_name= "Company Whom Ordered")
 
 	def __str__(self):
-		return str(self.orderFrom)
+		return str(self.user)
 
 class AddCustomer(models.Model):
+	user = models.ForeignKey('Users.User', on_delete=models.CASCADE, related_name= 'User')
 	customerName = models.CharField(max_length= 30, verbose_name= "Customer Name")
 	customerPhoneNumber = models.BigIntegerField(verbose_name= "Phone Number")
-	interestedProduct = models.ManyToManyField('Company.CompanyInventory', blank= True, verbose_name= "Interested Product")
-	companyInterested = models.ForeignKey('Company.AddCompany', on_delete = models.CASCADE, blank= True, null= True, verbose_name= "Interested Company")
-	influencedThrough = models.ForeignKey('Influencer.AddInfluencer', on_delete= models.CASCADE, blank= True, null= True, verbose_name= "Influencer (if any)")
-	dealerName = models.ForeignKey('Dealer.AddDealer', on_delete= models.CASCADE, blank= True, null= True, verbose_name= "Dealer Name")
+	interestedProduct = models.ForeignKey('Company.CompanyInventory', blank= True, null= True, verbose_name= "Interested Product", on_delete=models.CASCADE)
+	# companyInterested = models.ForeignKey('Company.AddCompany', on_delete = models.CASCADE, blank= True, null= True, verbose_name= "Interested Company")
+	influencedThrough = models.ForeignKey('Users.User', limit_choices_to={'groups__name': "Influencer"}, on_delete= models.CASCADE, blank= True, null= True, related_name= "InfluencerName")
+	dealerName = models.ForeignKey('Users.User', limit_choices_to={'groups__name': "Dealer"}, on_delete= models.CASCADE, blank= True, null= True, related_name= "DealerName")
 	createdOn = models.DateTimeField(auto_now_add= True, verbose_name= "Created On")
 	updatedOn = models.DateTimeField(auto_now = True, verbose_name= "Last Updated")
 
@@ -66,9 +71,11 @@ class AddCustomer(models.Model):
 		return str(self.customerName)
 
 class CompanyInventory(Inventory):
-	companyName = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, blank= True)
+	user = models.ForeignKey('Users.User', on_delete=models.CASCADE)
+	companyName = models.ForeignKey('Company.AddCompany', on_delete= models.CASCADE, blank= True, null= True)
 
 class AddCompany(models.Model):
+	user = models.ForeignKey('Users.User', on_delete=models.CASCADE)
 	companyName = models.CharField(max_length= 30, verbose_name= "Company Name")
 	dealerList = models.ManyToManyField('Dealer.AddDealer', blank= True, verbose_name= "Dealer List")
 	influencerList = models.ManyToManyField('Influencer.AddInfluencer', blank= True, verbose_name= "Influencer List") 

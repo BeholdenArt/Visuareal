@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'Company',
     'Dealer',
     'Influencer',
-    'Authentication', 
+    'Users',
+    'Points',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Tells django new custom user model is in place instead of in-built one 
+AUTH_USER_MODEL = 'Users.User'
+
+LOGOUT_REDIRECT_URL = 'login'

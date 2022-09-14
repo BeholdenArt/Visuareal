@@ -28,27 +28,29 @@
           {% for data in all_data %}  
           <tr>
             <td>
-              {{data.pk}}
+              {{forloop.counter}}
             </td>
             <td>
-              {{data.dealerName}}
+              {{data.first_name}}
             </td>
             <td>
               {{data.referrelCode}}
             </td>
             <td>
-              {{data.email }}
+              {{data.email}}
             </td>
             <td>
-              {{data.password}}
+              {{data.gstinNumber}}
             </td>
             <td>
               {{data.panNumber}}
             </td>
             <td>
-              {{data.totalPoint}}
+              {{data.totalPoint}} 
             </td>
-
+            <td>
+              <a type="button" name="delete" href="{% url 'deleteDealer' ref data.pk %}" class="btn btn-danger">Remove</a>
+            </td>
           </tr>
 
           {% endfor %}
