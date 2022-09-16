@@ -14,6 +14,7 @@ from django.core import serializers
 from json import dumps
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from Users.logic import tier
 # Create your views here.
 
 def dealerHome(request, ref=''):
@@ -31,7 +32,7 @@ def dealerHome(request, ref=''):
 				'ref' : ref,
 				'extend': 'base.html', 
 				'url' : "dealer", 
-				'name': "Dealer's", 
+				'name': user.first_name, 
 			}
 			return render(request, 'dealerhome.html', context)
 	else:
@@ -88,7 +89,7 @@ def dealerCustomerList(request, ref=''):
 				'all_data' : contents, 
 				'extend' : 'base.html', 
 				'url' : "dealer", 
-				'name': "Dealer's",
+				'name': user.first_name,
 				'ref' : ref,
 			}
 			return render(request, 'dealer/customerlist.html', context)
@@ -105,7 +106,7 @@ def dealerInventoryList(request, ref=''):
 				'all_data' : contents,
 				'extend' : 'base.html', 
 				'url' : "dealer", 
-				'name': "Dealer's",
+				'name': user.first_name,
 				'ref' : ref,
 			}
 			return render(request, 'dealer/inventorylist.html', context)
@@ -121,7 +122,7 @@ def dealerOrderQueue(request, ref=''):
 				'all_data' : contents, 
 				'extend' : 'base.html', 
 				'url' : "dealer", 
-				'name': "Dealer's",
+				'name': user.first_name,
 				'ref' : ref, 
 			}
 			return render(request, 'dealer/orderqueue.html', context)
@@ -179,11 +180,7 @@ def dealerOrderQueueInsert(request, ref=''):
 				productSelected = CompanyInventory.objects.filter(productName = PN)[0]
 				Ov = CompanyInventory.objects.filter(productName = PN)
 				Ov = list(Ov.values_list("price", flat=True))
-				# OP = request.POST.get("OrderPlaced")
-				# OT = request.POST.get("Companywhomordered")
-				# OrderPlaced = User.objects.get(referrelCode= ref)
-				# OrderPlaced = AddDealer.objects.filter(dealerName__exact = OP)
-				# OrderTo = AddCompany.objects.filter(companyName__exact = OT)
+
 				orderedQuantity = request.POST["orderedQuantity"]
 				Ov = Ov[0]*int(orderedQuantity) 
 				Placedon = request.POST["Placedon"]
@@ -195,11 +192,7 @@ def dealerOrderQueueInsert(request, ref=''):
 					expectedDelievery = Expecteddeliveryon,
 					orderValue = Ov,
 					orderedProducts = productSelected,
-					# orderFrom = OrderPlaced[0],
-					# orderTo = OrderTo[0],
 				)
-				# for pdt in productSelected:
-				# 	obj.orderedProducts.add(pdt)
 
 				obj.save()
 				print(obj)
@@ -215,7 +208,7 @@ def dealerOrderQueueInsert(request, ref=''):
 					'Companywhomordered' : OrderTo,
 					'extend' : 'popup.html',
 				}
-				return render(request, 'dealer/OrderQueueInsert.html', context)
+				return render(request, 'dealer/orderQueueInsert.html', context)
 	else:
 		return redirect('login')
 
@@ -226,7 +219,6 @@ def dealerDeleteOrderQueue(request, data_id, ref=''):
 			event = OrderQueue.objects.filter(user = user).get(pk=data_id)
 			event.delete()
 			return HttpResponseRedirect(reverse('dealerOrderQueue', args=(ref, )))
-			# return redirect('../orderQueue')
 	else:
 		return redirect('login')
 
@@ -253,8 +245,6 @@ def dealerAddCustomer(request, ref=''):
 						# companyInterested= companyInterested[0],
 						user = user,
 					)
-				# for pdt in productInterested:
-				# 	obj.interestedProduct.add(pdt)
 				obj.save()
 				return HttpResponse("<script>window.close();</script>")
 
@@ -289,11 +279,14 @@ def dealerPoints(request, ref=''):
 	if ref:
 		user = User.objects.get(referrelCode = ref)
 		if user is not None:
+			print(tier(ref))
 			context = {
 				'extend' : 'base.html', 
+				'totalPoints': user.totalPoints,
+				'tier': tier(ref),
 				'url' : "dealer", 
-				'name' : "Dealer's",
+				'name' : user.first_name,
 				'user': user,
 				'ref': ref,
 			}
-			return render(request, 'base.html' , context)
+			return render(request, 'dealer/dealerPoints.html' , context)

@@ -27,7 +27,7 @@ def companyHome(request, ref=''):
 				'inventory' : inventory,
 				'order' : order,
 				'url' : 'company', 
-				'name' : "Company's",
+				'name' : user.first_name,
 				'extend' : "base.html" ,
 				'user': user,
 				'ref': ref,
@@ -87,7 +87,7 @@ def companyCustomerList(request, ref=''):
 				'all_data' : contents, 
 				'extend' : 'base.html', 
 				'url' : 'company', 
-				'name' : "Company's",
+				'name' : user.first_name,
 				'user': user,
 				'ref': ref,
 			}
@@ -104,7 +104,7 @@ def companyInventoryList(request, ref=''):
 				'all_data' : contents, 
 				'extend' : 'base.html', 
 				'url' : 'company', 
-				'name' : "Company's",
+				'name' : user.first_name,
 				'user': user,
 				'ref': ref,
 			}	
@@ -121,7 +121,7 @@ def companyDealerList(request, ref=''):
 				'all_data' : contents, 
 				'extend' : 'base.html',	
 				'url' : 'company', 
-				'name' : "Company's",
+				'name' : user.first_name,
 				'user': user,
 				'ref': ref,
 			}
@@ -176,7 +176,7 @@ def companyOrderQueue(request, ref=''):
 				'all_data' : contents, 
 				'extend' : 'base.html', 
 				'url' : 'company', 
-				'name' : "Company's",
+				'name' : user.first_name,
 				'user': user,
 				'ref': ref,
 			}
@@ -194,21 +194,12 @@ def companyAddInventory(request, ref=''):
 				ProductQuantity = request.POST.get("ProductQuantity")
 				Point = request.POST.get("Point")
 				Price = request.POST.get("Price")
-				# companyName = request.POST.get("CompanyName")
-				# company = AddCompany.objects.filter(companyName__exact = companyName)
-				# if ProductName in CompanyInventory.
-				
-				# print("-"*100, obj)
-				# print("*"*100, obj.productQuantity)
-				
+
 				if CompanyInventory.objects.filter(productName__exact = ProductName).exists():
 					obj = CompanyInventory.objects.filter(productName__exact = ProductName)[0]
 					obj.productQuantity = int(obj.productQuantity) + int(ProductQuantity)
 					print('obj.newQuantity: ', obj.productQuantity)
 					obj.save()
-					# obj = CompanyInventory.objects.get()
-					# obj[0].save()
-
 					
 				else:
 					obj = CompanyInventory(
@@ -244,7 +235,6 @@ def companyDeleteInventory(request, data_id, ref=''):
 			event = CompanyInventory.objects.filter(user = user).get(pk=data_id)
 			event.delete()
 			return HttpResponseRedirect(reverse('companyInventoryList', args=(ref, )))
-			# return redirect('../inventoryList')
 	else:
 		return redirect('login')
 
@@ -256,28 +246,18 @@ def companyOrderQueueInsert(request, ref=''):
 				PN = request.POST.get("ProductName")
 
 				productSelected = CompanyInventory.objects.filter(productName = PN)[0]
-				# OP = request.POST.get("OrderPlaced")
-				# OT = request.POST.get("Companywhomordered")
-				# OrderPlaced = User.objects.filter(groups__name = 'Dealer')
-				# OrderTo = AddCompany.objects.filter(companyName__exact = OT)
 				orderedQuantity = request.POST.get("orderedQuantity")
 				Placedon = request.POST.get("Placedon")
 				Expecteddeliveryon = request.POST.get("Expecteddeliveryon")
 				obj = OrderQueue.objects.create(
-					# orderFrom = user,
-					# orderTo = OrderTo(0),
 					user = user,
 					orderedQuantity = orderedQuantity,
 					placedOn = Placedon,
 					expectedDelievery = Expecteddeliveryon,
 					orderedProducts = productSelected,
 				)
-				# for pdt in productSelected:
-				# 	obj.orderedProducts.add(pdt)
 
-				print('--'*100, obj.orderedProducts, '--'*100)
 				obj.save()
-				print(obj)
 				return HttpResponse("<script>window.close();</script>")
 
 			else:
@@ -302,7 +282,6 @@ def companyDeleteOrderQueue(request, data_id, ref=''):
 			event = OrderQueue.objects.get(pk=data_id)
 			event.delete()
 			return HttpResponseRedirect(reverse('companyOrderQueue', args=(ref, )))
-			# return redirect('../orderQueue')
 	else:
 		return redirect('login')
 
@@ -329,9 +308,8 @@ def companyapproveOrderQueue(request, data_id= '', ref=''):
 					point = CompanyInventory.objects.filter(productName = event.orderedProducts).values_list('point', flat=True)[0],
 				)
 				obj.save()
-			Points(ref)
+
 			quantity = CompanyInventory.objects.filter(productName__exact = event.orderedProducts).values_list('productQuantity')
-			print("--"*10,quantity)
 			if int(quantity[0][0]) >= event.orderedQuantity:
 				new_quantity = (int(quantity[0][0]) - event.orderedQuantity)
 				CompanyInventory.objects.filter(productName__exact = event.orderedProducts).update(productQuantity = new_quantity)
@@ -339,7 +317,6 @@ def companyapproveOrderQueue(request, data_id= '', ref=''):
 			companyDeleteOrderQueue(request, data_id, ref)
 
 			return HttpResponseRedirect(reverse('companyOrderQueue', args=(ref, )))
-			# return redirect('../orderQueue')
 	else:
 		return redirect('login')
 
@@ -352,18 +329,14 @@ def companyAddCustomer(request, ref=''):
 				name = request.POST.get("name")
 				pnumber = request.POST.get("pnumber")
 				influencedThrough = request.POST.get("influencedThrough")
-				# interestedCompany = request.POST.get("interestedCompany")
 				interestedPdt = request.POST.get("interestedProducts")
 				dealerSuggested = request.POST.get("dealerSuggested")
-				print('-'*100, influencedThrough, '-'*100)
 
 				dealerName = User.objects.filter(email__exact = dealerSuggested)
 				# companyInterested = AddCompany.objects.filter(companyName__exact = interestedCompany)
 				influenced = User.objects.filter(email__exact = influencedThrough)
 				productInterested = CompanyInventory.objects.filter(productName = interestedPdt)
 
-				print('-'*100, influenced, '-'*100)
-				# print('-'*100, influenced(0:1).get(), '-'*100)
 				obj = AddCustomer.objects.create(
 						user = user, 
 						customerName= name, 
@@ -373,8 +346,6 @@ def companyAddCustomer(request, ref=''):
 						interestedProduct = productInterested[0],
 						# companyInterested= companyInterested(0),
 					)
-				# for pdt in productInterested:
-				# 	obj.interestedProduct.add(pdt)
 				obj.save()
 				return HttpResponse("<script>window.close();</script>")
 
@@ -402,7 +373,6 @@ def companyDeleteCustomer(request, data_id, ref=''):
 			event = AddCustomer.objects.filter(user =user).get(pk=data_id)
 			event.delete()
 			return HttpResponseRedirect(reverse('companyCustomerList', args=(ref, )))
-			# return redirect('../customerList')
 	else:
 		return redirect('login')
 
@@ -411,15 +381,19 @@ def extraPoints(request, ref=''):
 		user = User.objects.get(referrelCode = ref)
 		if user is not None:
 			extra_points = ExtraPoints.objects.all()
+			dealers = User.objects.filter(groups__name = 'Dealer').all().order_by('-totalPoints')
+			influencers = User.objects.filter(groups__name = 'Influencer').all().order_by('-totalPoints')
 			context = {
 				'extra_points' : extra_points,
+				'dealers' : dealers,
+				'influencers': influencers,
 				'extend' : 'base.html', 
 				'url' : 'company', 
-				'name' : "Company's",
+				'name' : user.first_name,
 				'user': user,
 				'ref': ref,
 			}
-			return render(request, 'table.html' , context)
+			return render(request, 'company/companyPoints.html' , context)
 	else:
 		return redirect('login')
 
@@ -438,7 +412,6 @@ def updateExtraPoints(request,data_id, ref=''):
 				obj.occasion = occasion
 				obj.misc = misc
 				obj.geography = geography
-				print(obj.festival, obj.occasion, obj.misc, obj.geography)
 				obj.save()
 				return HttpResponse("<script>window.close();</script>")
 
@@ -465,7 +438,6 @@ def companyDeleteOrderQueueAll(request, ref=''):
 		user = User.objects.get(referrelCode = ref)
 		if user is not None:
 			OrderQueue.objects.all().delete()
-			print("*"*10)
 			return HttpResponseRedirect(reverse('companyOrderQueue', args=(ref, )))
 	else:
 		return redirect('login')
